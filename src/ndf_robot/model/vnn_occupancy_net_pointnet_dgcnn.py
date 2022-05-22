@@ -63,7 +63,8 @@ class VNNOccNet(nn.Module):
                  sigmoid=True,
                  return_features=False, 
                  acts='all',
-                 scaling=10.0):
+                 scaling=10.0,
+                 decoder=True):
         super().__init__()
 
         self.latent_dim = latent_dim
@@ -77,7 +78,8 @@ class VNNOccNet(nn.Module):
             self.model_type = 'pointnet'
             self.encoder = VNN_ResnetPointnet(c_dim=latent_dim) # modified resnet-18
 
-        self.decoder = DecoderInner(dim=3, z_dim=latent_dim, c_dim=0, hidden_size=latent_dim, leaky=True, sigmoid=sigmoid, return_features=return_features, acts=acts)
+        if decoder:
+            self.decoder = DecoderInner(dim=3, z_dim=latent_dim, c_dim=0, hidden_size=latent_dim, leaky=True, sigmoid=sigmoid, return_features=return_features, acts=acts)
 
 
     def forward(self, input):
